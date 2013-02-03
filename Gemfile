@@ -35,11 +35,12 @@ gem 'jquery-rails'
 # Deploy with Capistrano
 # gem 'capistrano'
 
-# To use debugger
-# gem 'debugger'
+  # To use debugger
+  # gem 'debugger'
 
-group :test, :development do
-  gem 'rspec-rails', '~> 2.11'
+  group :test, :development do
+    gem 'rspec-rails', '~> 2.11'
+    gem 'pg', '~> 0.14.1'
 end
 
 group :test do
