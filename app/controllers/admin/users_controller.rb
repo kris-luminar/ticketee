@@ -7,6 +7,9 @@ class Admin::UsersController < Admin::BaseController
     @users = User.all(order: "email")
   end
 
+  def show
+  end
+
   def new
     @user = User.new
   end
@@ -23,11 +26,15 @@ class Admin::UsersController < Admin::BaseController
     end
   end
 
-  def show
+  def edit
   end
 
   def update
     @user.skip_reconfirmation!
+    if params[:user][:password].blank?
+      params[:user].delete(:password)
+      params[:user].delete(:password_confirmation)
+    end
     if @user.update_attributes(params[:user], :as => :admin)
       flash[:notice] = "User has been updated."
       redirect_to admin_users_path
@@ -39,9 +46,9 @@ end
 
   private
   def find_user
-    @user = User.find(params[:user])
+    @user = User.find(params[:id])
   rescue ActiveRecord::RecordNotFound
     flash[:alert] = "The user you were looking for was not found."
-    redirect_to admin_root
+    redirect_to admin_root_path
   end
 end
