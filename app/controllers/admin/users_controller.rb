@@ -12,7 +12,7 @@ class Admin::UsersController < Admin::BaseController
   end
 
   def create
-    @user = User.new(params[:user])
+    @user = User.new(params[:user], :as => :admin)
     if @user.save
       flash[:notice] = "User has been created."
       # redirect_to admin_user_path(@user) # why not this?
@@ -25,6 +25,17 @@ class Admin::UsersController < Admin::BaseController
 
   def show
   end
+
+  def update
+    @user.skip_reconfirmation!
+    if @user.update_attributes(params[:user], :as => :admin)
+      flash[:notice] = "User has been updated."
+      redirect_to admin_users_path
+    else
+      flash[:alert] = "User has not been updated."
+      render :action => "edit"
+    end
+end
 
   private
   def find_user
