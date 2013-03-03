@@ -10,4 +10,15 @@ module ApplicationHelper
   def admins_only &block
     yield if current_user.try(:admin?)
   end
+
+  # why on earth doesn't this version work?
+  # def authorized?(permission, thing, &block)
+  #   block.call if can?(permission.to_sym, thing) ||
+  #                     current_user.try?(:admin?)
+  # end
+
+  def authorized?(permission, thing, &block)
+    block.call if can?(permission.to_sym, thing) ||
+                          current_user.try(:admin?)
+  end
 end
